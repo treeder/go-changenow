@@ -89,7 +89,7 @@ func (c *ChangeNow) MinAmount(source, target string) (float64, error) {
 // Use GetPair to get a single pair after you've called this.
 // WARNING: NOT THREAD SAFE!
 func (c *ChangeNow) AvailablePairs() (map[string]*Pair, error) {
-	if pairs != nil {
+	if pairs != nil && len(pairs) > 0  {
 		return pairs, nil
 	}
 
