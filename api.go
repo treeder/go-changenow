@@ -1,6 +1,7 @@
 package changenow
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 )
@@ -84,7 +85,14 @@ func (c *ChangeNow) MinAmount(source, target string) (float64, error) {
 
 // AvailablePairs ...
 // GET /api/v1/market-info/available-pairs/
-func (c *ChangeNow) AvailablePairs() ([]string, error) {
+// This function caches all the pairs, subsequent calls will not refresh.
+// Use GetPair to get a single pair after you've called this.
+// WARNING: NOT THREAD SAFE!
+func (c *ChangeNow) AvailablePairs() (map[string]*Pair, error) {
+	if pairs != nil {
+		return pairs, nil
+	}
+
 	path := "/market-info/available-pairs"
 
 	result := make([]string, 0)
@@ -100,9 +108,15 @@ func (c *ChangeNow) AvailablePairs() ([]string, error) {
 		addPair(name)
 	}
 
-	fmt.Println(pairs)
-
-	return result, nil
+	return pairs, nil
+}
+func (c *ChangeNow) GetPair(from, to string) (*Pair, error) {
+	if pairs == nil || len(pairs) == 0 {
+		return nil, errors.New("pairs not loaded, call AvailablePairs() first")
+	}
+	name := strings.ToLower(from) + "_" + strings.ToLower(to)
+	pair := getPair(name)
+	return pair, nil
 }
 
 // CreateTransaction ...
