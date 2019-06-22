@@ -127,7 +127,7 @@ func (c *ChangeNow) GetPair(from, to string) (*Pair, error) {
 // - not_valid_params
 // - cannot_create_transaction (when pair is not available?)
 // - not_valid_address
-// - out_of_range
+// - out_of_range - this comes back when below minimum amount
 func (c *ChangeNow) CreateTransaction(request *TransactionRequest) (*Transaction, error) {
 	path := "/transactions/" + c.apikey
 
