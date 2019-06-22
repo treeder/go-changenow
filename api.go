@@ -110,6 +110,8 @@ func (c *ChangeNow) AvailablePairs() (map[string]*Pair, error) {
 
 	return pairs, nil
 }
+
+// GetPair returns a matching pair or error if an invalid pair
 func (c *ChangeNow) GetPair(from, to string) (*Pair, error) {
 	if pairs == nil || len(pairs) == 0 {
 		return nil, errors.New("pairs not loaded, call AvailablePairs() first")
