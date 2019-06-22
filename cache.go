@@ -29,5 +29,5 @@ func addPair(name string) *Pair {
 }
 
 func getPair(name string) *Pair {
-	return addPair(name)
+	return pairs[name]
 }
